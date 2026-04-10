@@ -220,7 +220,7 @@ export default function Home() {
       <section id="story" className="relative">
         {/* Full-width real warehouse image */}
         <div className="relative h-[55vh] min-h-[420px]">
-          <Image src="/images/real/tydene-warehouse.jpg" alt="TYDENE warehouse at New Spitalfields Market" fill className="object-cover object-center" sizes="100vw" />
+          <Image src="/images/produce/warehouse-pro.jpg" alt="Fresh produce warehouse" fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#040a06] via-black/30 to-[#0e3528]" />
           <div className="absolute inset-0 flex items-end px-[5.5%] pb-16">
             <R>
@@ -277,7 +277,7 @@ export default function Home() {
               {[
                 { img: "/images/stages/02-ripening.jpg", t: "Premium Sourcing", d: "Direct from trusted growers across UK, Europe, and Mediterranean. We select for quality before speed." },
                 { img: "/images/produce/herbs.jpg", t: "Quality Packing", d: "Every item inspected, sorted, packed. Temperature-controlled handling from warehouse to van." },
-                { img: "/images/real/tydene-van.jpg", t: "Dawn Delivery", d: "Midnight starts from New Spitalfields. TYDENE vans across London before sunrise." },
+                { img: "/images/produce/delivery-fleet.jpg", t: "Dawn Delivery", d: "Midnight starts from New Spitalfields. Our fleet moves across London before sunrise." },
               ].map((item, i) => (
                 <R key={item.t} delay={i * .1}>
                   <div className="group overflow-hidden rounded-2xl border border-white/[.05] bg-white/[.02]">
