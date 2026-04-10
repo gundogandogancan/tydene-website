@@ -24,47 +24,38 @@ const stages = [
   { id: "final",     img: null,                                ey: "TYDENE", h: "Built on Trust.\nDelivered Fresh.", tx: "From field to table, the chain holds\nbecause the standards do.", s: .9, e: 1 },
 ];
 
-/* ─── PARALLAX SCENE BG ─── crossfade + ken burns + parallax ─── */
+/* ─── SCENE BG ─── FULL SCREEN photo with cinematic crossfade ─── */
 function SceneBG({ p, stage, idx }: { p: MotionValue<number>; stage: typeof stages[0]; idx: number }) {
   if (!stage.img) return null;
   const { s, e } = stage;
-
-  // First stage: visible immediately (opacity 1 at scroll 0), fades out at end
-  // Other stages: crossfade in before their range, hold, crossfade out after
   const isFirst = idx === 0;
-  const fadeInStart = isFirst ? 0 : Math.max(0, s - 0.03);
-  const fadeInEnd = isFirst ? 0 : s + 0.01;
-  const fadeOutStart = e - 0.02;
-  const fadeOutEnd = e + 0.02;
 
+  // CROSSFADE: each photo fades in/out with overlap for smooth cinema transitions
   const o = useTransform(p,
-    isFirst ? [0, fadeOutStart, fadeOutEnd] : [fadeInStart, fadeInEnd, fadeOutStart, fadeOutEnd],
-    isFirst ? [1, 1, 0] : [0, 1, 1, 0]
+    isFirst
+      ? [0, e - .015, e + .01]           // First: visible immediately, fade out at end
+      : [s - .02, s + .005, e - .015, e + .01],  // Others: fade in just before start, hold, fade out
+    isFirst
+      ? [1, 1, 0]
+      : [0, 1, 1, 0]
   );
 
-  // Ken Burns — alternating zoom in/out
-  const scale = useTransform(p, [s, e], idx % 2 === 0 ? [1, 1.12] : [1.1, 1]);
-  // Parallax — subtle vertical shift
-  const yShift = useTransform(p, [s, e], idx % 2 === 0 ? ["-2%", "2%"] : ["1%", "-1%"]);
-  // Color temperature shift per stage
-  const warmth = idx < 5 ? "sepia(0.08)" : idx < 8 ? "sepia(0.05) brightness(0.95)" : "sepia(0.03) brightness(0.9)";
+  // Ken Burns — slow cinematic zoom
+  const scale = useTransform(p, [s, e],
+    idx % 2 === 0 ? [1.0, 1.15] : [1.12, 1.0]
+  );
 
   return (
-    <motion.div className="absolute inset-0 z-[2] will-change-transform" style={{ opacity: o }}>
-      <motion.div className="relative h-full w-full overflow-hidden" style={{ scale, y: yShift }}>
+    <motion.div className="absolute inset-0 z-[2]" style={{ opacity: o }}>
+      <motion.div className="relative h-full w-full" style={{ scale }}>
         <Image
           src={stage.img} alt={stage.ey} fill
           className="object-cover" sizes="100vw"
-          priority={idx < 3} quality={90}
-          style={{ filter: warmth }}
+          priority={idx < 4}
         />
       </motion.div>
-      {/* Multi-layer cinematic grade */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/50" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/20" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_40%,transparent_30%,rgba(0,0,0,.3))]" />
-      {/* Color tint */}
-      <div className="absolute inset-0 mix-blend-soft-light" style={{ background: idx < 5 ? "rgba(46,95,32,0.08)" : idx < 8 ? "rgba(43,34,28,0.1)" : "rgba(24,60,46,0.08)" }} />
+      {/* SINGLE light overlay — just enough for text readability, NOT dark */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/5 to-black/10" />
     </motion.div>
   );
 }
@@ -129,8 +120,8 @@ function ST({ p, stage, idx }: { p: MotionValue<number>; stage: typeof stages[0]
     <motion.div className="absolute left-[5%] top-[22%] z-20 max-w-[44rem] px-5 sm:left-[5.5%] sm:px-0 md:top-[24%]" style={{ opacity: o, y: yy }}>
       <motion.div className="mb-3 text-[10px] font-medium uppercase tracking-[.32em] text-[#AE8C57] sm:text-[11px]" style={{ x: xSlide }}>{ey}</motion.div>
       <motion.div className="mb-6 h-[1.5px] w-12 rounded-full bg-[#AE8C57]/70" style={{ scaleX: useTransform(p, isFirst ? [0, 0.001] : [s, s + .04], [isFirst ? 1 : 0, 1]), transformOrigin: "left" }} />
-      <h2 className="whitespace-pre-line font-serif text-[clamp(2.4rem,7vw,5rem)] font-semibold leading-[.88] tracking-[-.025em] text-[#F5EFE3]" style={{ textShadow: "0 4px 40px rgba(0,0,0,.6), 0 1px 8px rgba(0,0,0,.4)" }}>{h}</h2>
-      <p className="mt-6 max-w-[30rem] whitespace-pre-line text-[14px] leading-[1.9] text-[#F5EFE3]/55 sm:text-[15px]" style={{ textShadow: "0 2px 20px rgba(0,0,0,.5)" }}>{tx}</p>
+      <h2 className="whitespace-pre-line font-serif text-[clamp(2.4rem,7vw,5rem)] font-semibold leading-[.88] tracking-[-.025em] text-[#F5EFE3]" style={{ textShadow: "0 2px 20px rgba(0,0,0,.7), 0 0 4px rgba(0,0,0,.5)" }}>{h}</h2>
+      <p className="mt-6 max-w-[30rem] whitespace-pre-line text-[14px] leading-[1.9] text-[#F5EFE3]/55 sm:text-[15px]" style={{ textShadow: "0 1px 12px rgba(0,0,0,.6)" }}>{tx}</p>
     </motion.div>
   );
 }
@@ -198,8 +189,8 @@ export default function Home() {
       {/* ── Progress ── */}
       <motion.div className="fixed left-0 top-0 z-[120] h-[2.5px]" style={{ width: pw, background: "linear-gradient(90deg, #AE8C57, #C43520 60%, #AE8C57)" }} />
 
-      {/* ── Film grain ── */}
-      <div className="pointer-events-none fixed inset-0 z-[110] opacity-[.03] mix-blend-overlay [background-size:200px]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
+      {/* ── Film grain — very subtle ── */}
+      <div className="pointer-events-none fixed inset-0 z-[110] opacity-[.02] mix-blend-overlay [background-size:200px]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
 
       {/* ── Nav ── */}
       <header className="fixed inset-x-0 top-0 z-[100] flex h-[72px] items-center justify-between px-[5%] backdrop-blur-sm" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,.65) 0%, rgba(0,0,0,.2) 70%, transparent 100%)" }}>
@@ -224,30 +215,27 @@ export default function Home() {
             <SceneBG key={stage.id} p={p} stage={stage} idx={i} />
           ))}
 
-          {/* Ambient glow — follows story */}
+          {/* Subtle ambient glow */}
           <motion.div className="pointer-events-none absolute z-[14] rounded-full" style={{
-            left: useTransform(p, [0, .2, .4, .6, .8, 1], ["58%", "50%", "48%", "60%", "55%", "50%"]),
-            top: useTransform(p, [0, .2, .4, .6, .8, 1], ["40%", "42%", "55%", "50%", "45%", "45%"]),
-            width: "55vw", height: "55vw", x: "-50%", y: "-50%",
-            opacity: useTransform(p, [0, .05, .2, .4, .6, .8, .9, 1], [.22, .25, .18, .12, .1, .14, .06, .03]),
-            background: "radial-gradient(circle,rgba(174,140,87,.3),rgba(174,140,87,.06) 45%,transparent 68%)",
-            filter: "blur(65px)"
+            left: "50%", top: "45%",
+            width: "40vw", height: "40vw", x: "-50%", y: "-50%",
+            opacity: useTransform(p, [0, .3, .6, .9, 1], [.1, .08, .06, .04, .02]),
+            background: "radial-gradient(circle,rgba(174,140,87,.2),transparent 65%)",
+            filter: "blur(50px)"
           }} />
 
-          {/* Particles */}
+          {/* Very subtle dust — 5 particles only */}
           <div className="pointer-events-none absolute inset-0 z-[16] overflow-hidden">
-            {Array.from({ length: 16 }).map((_, i) => (
-              <motion.div key={i} className="absolute rounded-full"
-                style={{ left: `${5 + (i * 6) % 90}%`, top: `${8 + (i * 7.5) % 84}%`, width: i % 4 === 0 ? 3 : 2, height: i % 4 === 0 ? 3 : 2, background: i % 3 === 0 ? "rgba(174,140,87,.4)" : "rgba(245,239,227,.1)" }}
-                animate={{ y: [0, -(15 + i * 3), -(40 + i * 4), -(60 + i * 2)], opacity: [.05, .3, .12, 0] }}
-                transition={{ duration: 6.5 + i * .6, delay: i * .35, repeat: Infinity, ease: "easeInOut" }} />
+            {[15, 35, 55, 75, 90].map((left, i) => (
+              <motion.div key={i} className="absolute h-[2px] w-[2px] rounded-full bg-white/[.08]"
+                style={{ left: `${left}%`, top: `${25 + i * 12}%` }}
+                animate={{ y: [0, -40, -80], opacity: [0, .15, 0] }}
+                transition={{ duration: 9 + i * 2, delay: i, repeat: Infinity, ease: "easeInOut" }} />
             ))}
           </div>
 
-          {/* Text-safe overlays */}
-          <div className="absolute inset-0 z-[17] bg-gradient-to-r from-black/50 via-transparent to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 z-[17] h-[25%] bg-gradient-to-t from-black/45 to-transparent" />
-          <div className="absolute inset-x-0 top-0 z-[17] h-[12%] bg-gradient-to-b from-black/35 to-transparent" />
+          {/* Minimal text-safe overlays — DON'T hide photos */}
+          <div className="absolute inset-x-0 bottom-0 z-[17] h-[18%] bg-gradient-to-t from-black/30 to-transparent" />
 
           {/* Tomato */}
           <Tomato p={p} />
@@ -275,8 +263,8 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Cinematic vignette */}
-          <div className="pointer-events-none absolute inset-0 z-[50]" style={{ boxShadow: "inset 0 0 280px 100px rgba(0,0,0,.5)" }} />
+          {/* Subtle vignette — don't hide photos */}
+          <div className="pointer-events-none absolute inset-0 z-[50]" style={{ boxShadow: "inset 0 0 150px 40px rgba(0,0,0,.25)" }} />
         </div>
       </section>
 
@@ -458,7 +446,7 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-10 px-6 md:grid-cols-4 md:gap-16">
                 {[["200+", "Products"], ["22+", "Years"], ["6", "Days/Week"], ["99%", "On-Time"]].map(([v, l]) => (
                   <div key={l} className="text-center">
-                    <div className="font-serif text-[clamp(2.5rem,6vw,4rem)] font-bold text-[#AE8C57]" style={{ textShadow: "0 2px 20px rgba(0,0,0,.5)" }}>{v}</div>
+                    <div className="font-serif text-[clamp(2.5rem,6vw,4rem)] font-bold text-[#AE8C57]" style={{ textShadow: "0 1px 12px rgba(0,0,0,.6)" }}>{v}</div>
                     <div className="mt-2 text-[10px] uppercase tracking-[.2em] text-[#F5EFE3]/35">{l}</div>
                   </div>
                 ))}
