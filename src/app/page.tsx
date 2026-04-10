@@ -56,12 +56,13 @@ function SceneImg({ p, i }: { p: MotionValue<number>; i: number }) {
 
   return (
     <motion.div
-      className="absolute inset-0"
+      className="absolute inset-0 overflow-hidden"
       style={{ opacity, zIndex: 1 }}
     >
       <motion.div className="h-full w-full" style={{ scale }}>
-        {/* ALL images loaded eagerly — they're all in the same viewport */}
-        <Image src={scenes[i].img} alt="" fill className="object-cover" sizes="100vw" loading="eager" />
+        {/* Using native img — Next.js Image fill + eager doesn't work in sticky containers */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={scenes[i].img} alt="" className="h-full w-full object-cover" loading="eager" decoding="async" />
       </motion.div>
       {/* Minimal overlay for text readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
