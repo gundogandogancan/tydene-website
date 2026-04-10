@@ -28,15 +28,24 @@ const stages = [
 function SceneBG({ p, stage, idx }: { p: MotionValue<number>; stage: typeof stages[0]; idx: number }) {
   if (!stage.img) return null;
   const { s, e } = stage;
-  const dur = e - s;
-  const fi = Math.max(0, s - dur * .15);
-  const fo = Math.min(1, e + dur * .1);
 
-  const o = useTransform(p, [fi, fi + dur * .2, e - dur * .15, fo], [0, 1, 1, 0]);
+  // First stage: visible immediately (opacity 1 at scroll 0), fades out at end
+  // Other stages: crossfade in before their range, hold, crossfade out after
+  const isFirst = idx === 0;
+  const fadeInStart = isFirst ? 0 : Math.max(0, s - 0.03);
+  const fadeInEnd = isFirst ? 0 : s + 0.01;
+  const fadeOutStart = e - 0.02;
+  const fadeOutEnd = e + 0.02;
+
+  const o = useTransform(p,
+    isFirst ? [0, fadeOutStart, fadeOutEnd] : [fadeInStart, fadeInEnd, fadeOutStart, fadeOutEnd],
+    isFirst ? [1, 1, 0] : [0, 1, 1, 0]
+  );
+
   // Ken Burns — alternating zoom in/out
   const scale = useTransform(p, [s, e], idx % 2 === 0 ? [1, 1.12] : [1.1, 1]);
   // Parallax — subtle vertical shift
-  const yShift = useTransform(p, [s, e], idx % 2 === 0 ? ["-3%", "3%"] : ["2%", "-2%"]);
+  const yShift = useTransform(p, [s, e], idx % 2 === 0 ? ["-2%", "2%"] : ["1%", "-1%"]);
   // Color temperature shift per stage
   const warmth = idx < 5 ? "sepia(0.08)" : idx < 8 ? "sepia(0.05) brightness(0.95)" : "sepia(0.03) brightness(0.9)";
 
@@ -51,9 +60,9 @@ function SceneBG({ p, stage, idx }: { p: MotionValue<number>; stage: typeof stag
         />
       </motion.div>
       {/* Multi-layer cinematic grade */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-black/60" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-black/25" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_40%,transparent_30%,rgba(0,0,0,.4))]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/20" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_40%,transparent_30%,rgba(0,0,0,.3))]" />
       {/* Color tint */}
       <div className="absolute inset-0 mix-blend-soft-light" style={{ background: idx < 5 ? "rgba(46,95,32,0.08)" : idx < 8 ? "rgba(43,34,28,0.1)" : "rgba(24,60,46,0.08)" }} />
     </motion.div>
@@ -66,9 +75,9 @@ function Tomato({ p }: { p: MotionValue<number> }) {
   const y = useTransform(p, [0,.1,.2,.3,.38,.46,.54,.62,.72,.82,.9,1], [42,40,44,38,24,64,60,58,55,50,44,44]);
   const s = useTransform(p, [0,.1,.2,.3,.38,.46,.54,.62,.72,.82,.9,1], [.8,1.3,1.6,1.8,1.3,.75,.55,.4,.3,.25,.2,0]);
   const r = useTransform(p, [0,.1,.2,.3,.38,.46,.54,.62,.72,.82,.9,1], [-4,0,3,5,0,18,8,4,2,0,0,0]);
-  const o = useTransform(p, [0,.02,.8,.87], [0,1,1,0]);
+  const o = useTransform(p, [0,.8,.87], [1,1,0]);
   const hue = useTransform(p, [0,.1,.2,.3,1], [68,50,25,10,8]);
-  const glow = useTransform(p, [.05,.15,.28,.45,.65,.8], [.04,.35,.5,.15,.1,.06]);
+  const glow = useTransform(p, [0,.08,.15,.28,.45,.65,.8], [.2,.15,.35,.5,.15,.1,.06]);
   const bl = useTransform(p, [.36,.42,.46], [0,3.5,0]);
 
   return (
@@ -105,17 +114,21 @@ function Tomato({ p }: { p: MotionValue<number> }) {
 }
 
 /* ─── SCENE TEXT — with entrance animations ─── */
-function ST({ p, stage }: { p: MotionValue<number>; stage: typeof stages[0] }) {
+function ST({ p, stage, idx }: { p: MotionValue<number>; stage: typeof stages[0]; idx: number }) {
   const { s, e, ey, h, tx } = stage;
-  const a = Math.max(0.001, s);
-  const o = useTransform(p, [a, a + .025, e - .025, e], [0, 1, 1, 0]);
-  const yy = useTransform(p, [a, a + .04], [40, 0]);
-  const xSlide = useTransform(p, [a, a + .05], [-20, 0]);
+  const isFirst = idx === 0;
+  // First text visible immediately, others fade in
+  const o = useTransform(p,
+    isFirst ? [0, e - .03, e] : [s, s + .025, e - .025, e],
+    isFirst ? [1, 1, 0] : [0, 1, 1, 0]
+  );
+  const yy = useTransform(p, isFirst ? [0, 0] : [s, s + .04], isFirst ? [0, 0] : [40, 0]);
+  const xSlide = useTransform(p, isFirst ? [0, 0] : [s, s + .05], isFirst ? [0, 0] : [-20, 0]);
 
   return (
     <motion.div className="absolute left-[5%] top-[22%] z-20 max-w-[44rem] px-5 sm:left-[5.5%] sm:px-0 md:top-[24%]" style={{ opacity: o, y: yy }}>
       <motion.div className="mb-3 text-[10px] font-medium uppercase tracking-[.32em] text-[#AE8C57] sm:text-[11px]" style={{ x: xSlide }}>{ey}</motion.div>
-      <motion.div className="mb-6 h-[1.5px] w-12 rounded-full bg-[#AE8C57]/70" style={{ scaleX: useTransform(p, [a, a + .04], [0, 1]), transformOrigin: "left" }} />
+      <motion.div className="mb-6 h-[1.5px] w-12 rounded-full bg-[#AE8C57]/70" style={{ scaleX: useTransform(p, isFirst ? [0, 0.001] : [s, s + .04], [isFirst ? 1 : 0, 1]), transformOrigin: "left" }} />
       <h2 className="whitespace-pre-line font-serif text-[clamp(2.4rem,7vw,5rem)] font-semibold leading-[.88] tracking-[-.025em] text-[#F5EFE3]" style={{ textShadow: "0 4px 40px rgba(0,0,0,.6), 0 1px 8px rgba(0,0,0,.4)" }}>{h}</h2>
       <p className="mt-6 max-w-[30rem] whitespace-pre-line text-[14px] leading-[1.9] text-[#F5EFE3]/55 sm:text-[15px]" style={{ textShadow: "0 2px 20px rgba(0,0,0,.5)" }}>{tx}</p>
     </motion.div>
@@ -216,7 +229,7 @@ export default function Home() {
             left: useTransform(p, [0, .2, .4, .6, .8, 1], ["58%", "50%", "48%", "60%", "55%", "50%"]),
             top: useTransform(p, [0, .2, .4, .6, .8, 1], ["40%", "42%", "55%", "50%", "45%", "45%"]),
             width: "55vw", height: "55vw", x: "-50%", y: "-50%",
-            opacity: useTransform(p, [0, .05, .2, .4, .6, .8, .9, 1], [.08, .2, .18, .12, .1, .14, .06, .03]),
+            opacity: useTransform(p, [0, .05, .2, .4, .6, .8, .9, 1], [.22, .25, .18, .12, .1, .14, .06, .03]),
             background: "radial-gradient(circle,rgba(174,140,87,.3),rgba(174,140,87,.06) 45%,transparent 68%)",
             filter: "blur(65px)"
           }} />
@@ -240,13 +253,13 @@ export default function Home() {
           <Tomato p={p} />
 
           {/* Scene texts */}
-          {stages.slice(0, -1).map((stage) => <ST key={stage.id} p={p} stage={stage} />)}
+          {stages.slice(0, -1).map((stage, i) => <ST key={stage.id} p={p} stage={stage} idx={i} />)}
 
           {/* Brand reveal */}
           <Brand p={p} />
 
           {/* Scroll indicator */}
-          <motion.div className="pointer-events-none absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-3" style={{ opacity: useTransform(p, [0, .015, .05], [1, 1, 0]) }}>
+          <motion.div className="pointer-events-none absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-3" style={{ opacity: useTransform(p, [0, .03, .06], [1, 1, 0]) }}>
             <span className="text-[9px] uppercase tracking-[.35em] text-white/22">Scroll to begin the journey</span>
             <motion.div className="h-8 w-px bg-white/12" animate={{ scaleY: [.3, 1, .3] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }} />
           </motion.div>
