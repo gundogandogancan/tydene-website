@@ -267,9 +267,10 @@ export default function Home() {
           {/* Stage indicator — right dots */}
           <div className="fixed right-5 top-1/2 z-[100] hidden -translate-y-1/2 flex-col gap-[6px] md:flex">
             {stages.map((stage) => (
-              <motion.div key={stage.id} className="h-[6px] w-[6px] rounded-full border border-[#AE8C57]/30 transition-colors" style={{
-                background: useTransform(p, [stage.s, stage.s + .02, stage.e - .02, stage.e], ["transparent", "#AE8C57", "#AE8C57", "transparent"]),
-                borderColor: useTransform(p, [stage.s, stage.s + .02, stage.e - .02, stage.e], ["rgba(174,140,87,.2)", "rgba(174,140,87,.8)", "rgba(174,140,87,.8)", "rgba(174,140,87,.2)"])
+              <motion.div key={stage.id} className="h-[6px] w-[6px] rounded-full border border-[#AE8C57]/30" style={{
+                opacity: useTransform(p, [stage.s, stage.s + .015, stage.e - .015, stage.e], [.25, 1, 1, .25]),
+                background: "#AE8C57",
+                scale: useTransform(p, [stage.s, stage.s + .015, stage.e - .015, stage.e], [.6, 1.1, 1.1, .6])
               }} />
             ))}
           </div>
@@ -283,9 +284,9 @@ export default function Home() {
            STORY — with full-width image
          ═══════════════════════════════════════ */}
       <section id="story" className="relative overflow-hidden">
-        {/* Full-width story image — mixed fresh produce */}
+        {/* Full-width story image — REAL TYDENE warehouse at New Spitalfields */}
         <div className="relative h-[50vh] min-h-[400px]">
-          <Image src="/images/produce/mixed-fresh.jpg" alt="Fresh produce variety" fill className="object-cover" sizes="100vw" />
+          <Image src="/images/real/tydene-warehouse.jpg" alt="TYDENE warehouse at New Spitalfields Market" fill className="object-cover object-center" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#061008] via-transparent to-[#0e3528]" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/30" />
           <div className="absolute inset-0 flex items-center px-[5.5%]">
@@ -450,7 +451,7 @@ export default function Home() {
          ═══════════════════════════════════════ */}
       <section className="relative overflow-hidden">
         <div className="relative h-[35vh] min-h-[280px]">
-          <Image src="/images/stages/12-london.jpg" alt="London delivery" fill className="object-cover" sizes="100vw" />
+          <Image src="/images/real/tydene-van.jpg" alt="TYDENE delivery van in London" fill className="object-cover object-center" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0c2e22] via-black/50 to-[#0e3528]" />
           <div className="absolute inset-0 flex items-center justify-center">
             <R>
