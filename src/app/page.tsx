@@ -294,17 +294,23 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Bottom detail strip */}
-            <div className="grid gap-px overflow-hidden rounded-xl bg-white/[.04] md:grid-cols-3">
+            {/* Bottom detail cards — WITH photos */}
+            <div className="grid gap-5 md:grid-cols-3">
               {[
-                ["Reliable Schedule", "6 days a week, 52 weeks a year."],
-                ["Quality Guarantee", "Not happy? We make it right."],
-                ["Bespoke Orders", "Exotic requests? We adapt to you."],
-              ].map(([t, d], i) => (
-                <R key={t} delay={.3 + i * .05}>
-                  <div className="bg-[#12100c] p-7 hover:bg-white/[.02] transition-colors">
-                    <h4 className="font-serif text-lg text-white">{t}</h4>
-                    <p className="mt-2 text-[12px] leading-[1.6] text-white/35">{d}</p>
+                { img: "/images/produce/schedule.jpg", t: "Reliable Schedule", d: "6 days a week, 52 weeks a year. Your kitchen depends on our consistency." },
+                { img: "/images/produce/quality.jpg", t: "Quality Guarantee", d: "Not happy? We make it right. Our reputation is built on doing what's right." },
+                { img: "/images/produce/bespoke.jpg", t: "Bespoke Orders", d: "Exotic ingredients, specific quantities, last-minute additions. We adapt to you." },
+              ].map((item, i) => (
+                <R key={item.t} delay={.3 + i * .07}>
+                  <div className="group overflow-hidden rounded-xl border border-white/[.05] bg-white/[.02]">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image src={item.img} alt={item.t} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width:768px) 100vw, 33vw" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#12100c] via-[#12100c]/30 to-transparent" />
+                    </div>
+                    <div className="p-6">
+                      <h4 className="font-serif text-lg text-white">{item.t}</h4>
+                      <p className="mt-2 text-[13px] leading-[1.65] text-white/38">{item.d}</p>
+                    </div>
                   </div>
                 </R>
               ))}
