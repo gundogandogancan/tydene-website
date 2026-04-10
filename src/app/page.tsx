@@ -101,21 +101,48 @@ export default function Home() {
   const heroTextY = useTransform(heroP, [0, 1], [0, -80]);
   const heroO = useTransform(heroP, [0, .7], [1, 0]);
 
-  /* Force video autoplay — browsers block without user gesture */
+  const [videoReady, setVideoReady] = useState(false);
+
+  /* AGGRESSIVE video autoplay — Doğancan wants it playing INSTANTLY */
   useEffect(() => {
     const v = vidRef.current;
     if (!v) return;
+
+    // Force muted (required for autoplay in ALL browsers)
     v.muted = true;
-    const tryPlay = () => { v.play().catch(() => {}); };
-    tryPlay();
-    v.addEventListener("loadeddata", tryPlay);
-    v.addEventListener("canplay", tryPlay);
-    document.addEventListener("click", tryPlay, { once: true });
-    document.addEventListener("touchstart", tryPlay, { once: true });
-    document.addEventListener("scroll", tryPlay, { once: true });
+    v.defaultMuted = true;
+    v.setAttribute("muted", "");
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "");
+
+    const forcePlay = () => {
+      if (v.paused) {
+        const p = v.play();
+        if (p) p.then(() => setVideoReady(true)).catch(() => {});
+      } else {
+        setVideoReady(true);
+      }
+    };
+
+    // Try immediately
+    forcePlay();
+
+    // Try on every possible event
+    const events = ["loadedmetadata", "loadeddata", "canplay", "canplaythrough"];
+    events.forEach(e => v.addEventListener(e, forcePlay));
+
+    // Retry every 100ms for 5 seconds
+    const interval = setInterval(forcePlay, 100);
+    const timeout = setTimeout(() => clearInterval(interval), 5000);
+
+    // Also try on user interaction
+    const userEvents = ["click", "touchstart", "scroll", "mousemove", "keydown"];
+    userEvents.forEach(e => document.addEventListener(e, forcePlay, { once: true }));
+
     return () => {
-      v.removeEventListener("loadeddata", tryPlay);
-      v.removeEventListener("canplay", tryPlay);
+      events.forEach(e => v.removeEventListener(e, forcePlay));
+      clearInterval(interval);
+      clearTimeout(timeout);
     };
   }, []);
 
@@ -135,8 +162,18 @@ export default function Home() {
       </header>
 
       {/* ═══ HERO — CINEMATIC VIDEO BACKGROUND ═══ */}
-      <section ref={heroRef} className="relative h-screen min-h-[600px] overflow-hidden">
-        {/* Kling AI cinematic video — tomato field, alive */}
+      <section ref={heroRef} className="relative h-screen min-h-[600px] overflow-hidden bg-black">
+        {/* Fallback photo — shows while video loads */}
+        <motion.div className="absolute inset-0 overflow-hidden" style={{ y: heroY, scale: heroScale }}>
+          <Image
+            src="/images/stages/01-field.jpg"
+            alt="Tomato field"
+            fill
+            priority
+            className={`object-cover scale-110 transition-opacity duration-1000 ${videoReady ? "opacity-0" : "opacity-100"}`}
+          />
+        </motion.div>
+        {/* Kling AI cinematic video — plays on top when ready */}
         <motion.div className="absolute inset-0 overflow-hidden" style={{ y: heroY, scale: heroScale }}>
           <video
             ref={vidRef}
@@ -145,7 +182,7 @@ export default function Home() {
             loop
             playsInline
             preload="auto"
-            className="absolute inset-0 h-full w-full object-cover scale-110"
+            className={`absolute inset-0 h-full w-full object-cover scale-110 transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"}`}
             src="/images/hero-video.mp4"
           />
         </motion.div>
