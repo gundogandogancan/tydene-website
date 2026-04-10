@@ -114,12 +114,19 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* ═══ HERO — parallax, scale, text float ═══ */}
+      {/* ═══ HERO — CINEMATIC VIDEO BACKGROUND ═══ */}
       <section ref={heroRef} className="relative h-screen min-h-[600px] overflow-hidden">
+        {/* Kling AI cinematic video — tomato field, alive */}
         <motion.div className="absolute inset-[-10%]" style={{ y: heroY, scale: heroScale }}>
-          <Image src="/images/stages/01-field.jpg" alt="" fill className="object-cover" priority sizes="100vw" />
+          <video
+            autoPlay muted loop playsInline
+            className="h-full w-full object-cover"
+            poster="/images/stages/01-field.jpg"
+          >
+            <source src="/images/hero-video.mp4" type="video/mp4" />
+          </video>
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-[35%] bg-gradient-to-t from-[#040a06] to-transparent" />
         <motion.div className="absolute inset-0 flex items-center px-[5.5%]" style={{ y: heroTextY, opacity: heroO }}>
           <div className="max-w-2xl">
