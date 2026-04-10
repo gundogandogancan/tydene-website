@@ -94,11 +94,30 @@ function Marquee() {
    ═══════════════════════════════════════ */
 export default function Home() {
   const heroRef = useRef(null);
+  const vidRef = useRef<HTMLVideoElement>(null);
   const { scrollYProgress: heroP } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(heroP, [0, 1], ["0%", "40%"]);
   const heroScale = useTransform(heroP, [0, 1], [1, 1.15]);
   const heroTextY = useTransform(heroP, [0, 1], [0, -80]);
   const heroO = useTransform(heroP, [0, .7], [1, 0]);
+
+  /* Force video autoplay — browsers block without user gesture */
+  useEffect(() => {
+    const v = vidRef.current;
+    if (!v) return;
+    v.muted = true;
+    const tryPlay = () => { v.play().catch(() => {}); };
+    tryPlay();
+    v.addEventListener("loadeddata", tryPlay);
+    v.addEventListener("canplay", tryPlay);
+    document.addEventListener("click", tryPlay, { once: true });
+    document.addEventListener("touchstart", tryPlay, { once: true });
+    document.addEventListener("scroll", tryPlay, { once: true });
+    return () => {
+      v.removeEventListener("loadeddata", tryPlay);
+      v.removeEventListener("canplay", tryPlay);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#040a06] text-white overflow-x-hidden">
@@ -120,13 +139,13 @@ export default function Home() {
         {/* Kling AI cinematic video — tomato field, alive */}
         <motion.div className="absolute inset-0 overflow-hidden" style={{ y: heroY, scale: heroScale }}>
           <video
+            ref={vidRef}
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
             className="absolute inset-0 h-full w-full object-cover scale-110"
-            poster="/images/stages/01-field.jpg"
             src="/images/hero-video.mp4"
           />
         </motion.div>
