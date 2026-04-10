@@ -330,7 +330,7 @@ export default function Home() {
             <R><div>
               <div className="text-[10px] uppercase tracking-[.35em] text-[#AE8C57]">OUR PRODUCE</div>
               <h3 className="mt-4 font-serif text-[clamp(2.2rem,5.5vw,4rem)] text-white" style={{ textShadow: "0 2px 25px rgba(0,0,0,.5)" }}>The freshest for<br />London&apos;s finest</h3>
-              <p className="mt-3 text-[14px] text-white/50">Over 200 product lines. Sourced daily. Delivered fresh.</p>
+              <p className="mt-3 text-[14px] text-white/50">Fresh, dried, tropical, roots, herbs, exotics — every product your kitchen needs.</p>
             </div></R>
           </div>
         </div>
@@ -339,12 +339,15 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { t: "Tomatoes", img: "/images/produce/tomatoes.jpg", d: "Vine, Cherry, Beef, Plum, Heritage. Our signature — sun-ripened and flavour-packed.", c: "#C43520" },
-                { t: "Peppers", img: "/images/produce/peppers.jpg", d: "Bell, Chilli, Romano, Padron, Scotch Bonnet. Vibrant colour, bold taste.", c: "#D4A017" },
-                { t: "Salad & Greens", img: "/images/produce/greens.jpg", d: "Lettuce, Rocket, Spinach, Kale. Crisp and fresh, delivered at peak.", c: "#4A7A2A" },
-                { t: "Citrus & Fruits", img: "/images/produce/citrus.jpg", d: "Lemons, Limes, Oranges, Berries, Avocados. Bright and always in season.", c: "#E8A800" },
-                { t: "Herbs", img: "/images/produce/herbs.jpg", d: "Basil, Coriander, Mint, Parsley, Thyme. Aromatic, fragrant, cut fresh.", c: "#6B8B3A" },
-                { t: "Exotics", img: "/images/produce/exotic.jpg", d: "Aubergine, Okra, Plantain, Yam. Specialty imports for global kitchens.", c: "#8B5A8A" },
+                { t: "Tomatoes", img: "/images/produce/tomatoes.jpg", d: "Vine, Cherry, Beef, Plum, Heritage. Sun-ripened, flavour-packed, daily supply.", c: "#C43520" },
+                { t: "Peppers & Chillies", img: "/images/produce/peppers.jpg", d: "Bell, Chilli, Romano, Padron, Scotch Bonnet, Jalapeño. Every heat level.", c: "#D4A017" },
+                { t: "Salad & Greens", img: "/images/produce/greens.jpg", d: "Lettuce, Rocket, Spinach, Kale, Watercress, Pak Choi. Crisp and peak-fresh.", c: "#4A7A2A" },
+                { t: "Citrus & Fruits", img: "/images/produce/citrus.jpg", d: "Lemons, Limes, Oranges, Berries, Avocados, Grapes. Always in season.", c: "#E8A800" },
+                { t: "Root Vegetables", img: "/images/produce/roots.jpg", d: "Potatoes, Carrots, Onions, Beetroot, Turnips, Parsnips. Kitchen staples daily.", c: "#8B6914" },
+                { t: "Herbs & Aromatics", img: "/images/produce/herbs.jpg", d: "Basil, Coriander, Mint, Parsley, Thyme, Rosemary, Garlic, Ginger.", c: "#6B8B3A" },
+                { t: "Tropical & Exotic", img: "/images/produce/tropical.jpg", d: "Mango, Pineapple, Passion Fruit, Plantain, Yam, Okra, Scotch Bonnet.", c: "#E85D00" },
+                { t: "Mushrooms", img: "/images/produce/mushrooms.jpg", d: "Button, Chestnut, Portobello, Shiitake, Oyster, King Oyster. Fresh daily.", c: "#8B7355" },
+                { t: "Dried Fruits & Nuts", img: "/images/produce/dried-fruits.jpg", d: "Dates, Figs, Apricots, Almonds, Cashews, Walnuts. Premium pantry supply.", c: "#A0522D" },
               ].map((item, i) => (
                 <R key={item.t} delay={i * .07}>
                   <div className="group overflow-hidden rounded-2xl border border-white/[.05] bg-white/[.02]">
@@ -382,7 +385,7 @@ export default function Home() {
             </div></R>
             <div className="mt-16 grid gap-8 md:grid-cols-4">
               {[
-                { v: "200+", l: "Products", d: "Fruit, vegetables, herbs, exotics" },
+                { v: "200+", l: "Products", d: "Fresh, dried, tropical, roots, herbs" },
                 { v: "22+", l: "Years", d: "Trusted since 2003" },
                 { v: "6", l: "Days/Week", d: "Mon–Sat, midnight starts" },
                 { v: "99%", l: "On-Time", d: "Reliability you can count on" },
@@ -407,10 +410,10 @@ export default function Home() {
         <div className="mx-auto max-w-5xl">
           <div className="grid gap-5 md:grid-cols-2">
             {[
-              { n: "01", t: "Trust", d: "Over 200 London restaurants depend on us daily. Our word is our bond.", img: "/images/produce/tomatoes.jpg" },
-              { n: "02", t: "Freshness", d: "Harvest to kitchen in the shortest time possible. Cold chain integrity.", img: "/images/produce/greens.jpg" },
-              { n: "03", t: "Consistency", d: "Same quality, every delivery, every single morning.", img: "/images/produce/citrus.jpg" },
-              { n: "04", t: "Relationships", d: "We know our growers by name, our clients by preference.", img: "/images/stages/03-selection.jpg" },
+              { n: "01", t: "Trust", d: "Over 200 London restaurants depend on us daily. Our word is our bond.", img: "/images/produce/mixed-fresh.jpg" },
+              { n: "02", t: "Freshness", d: "Harvest to kitchen in the shortest time. Cold chain from farm to door.", img: "/images/produce/roots.jpg" },
+              { n: "03", t: "Consistency", d: "Same quality, every delivery, every single morning. 6 days a week.", img: "/images/produce/mushrooms.jpg" },
+              { n: "04", t: "Full Range", d: "Fresh, dried, tropical, exotic — every fruit and vegetable you need.", img: "/images/produce/dried-fruits.jpg" },
             ].map((item, i) => (
               <R key={item.n} delay={i * .08}>
                 <div className="group flex gap-5 rounded-xl border border-white/[.05] bg-white/[.02] p-5 transition-colors hover:bg-white/[.04]">
