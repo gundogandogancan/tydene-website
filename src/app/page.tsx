@@ -270,9 +270,9 @@ export default function Home() {
            STORY — with full-width image
          ═══════════════════════════════════════ */}
       <section id="story" className="relative overflow-hidden">
-        {/* Full-width story image */}
+        {/* Full-width story image — mixed fresh produce */}
         <div className="relative h-[50vh] min-h-[400px]">
-          <Image src="/images/stages/03-selection.jpg" alt="Hand selecting produce" fill className="object-cover" sizes="100vw" />
+          <Image src="/images/produce/mixed-fresh.jpg" alt="Fresh produce variety" fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#061008] via-transparent to-[#0e3528]" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/30" />
           <div className="absolute inset-0 flex items-center px-[5.5%]">
@@ -339,8 +339,8 @@ export default function Home() {
             {/* Photo cards */}
             <div className="grid gap-5 md:grid-cols-3">
               {[
-                { img: "/images/stages/02-ripening.jpg", t: "Premium Sourcing", d: "Direct from trusted growers across UK, Europe, and Mediterranean. Sun-ripened, hand-selected." },
-                { img: "/images/stages/07-packing.jpg", t: "Quality Packing", d: "Every item inspected, sorted, and packed with precision. Temperature-controlled handling." },
+                { img: "/images/produce/mixed-fresh.jpg", t: "Premium Sourcing", d: "Direct from trusted growers across UK, Europe, and Mediterranean. Sun-ripened, hand-selected." },
+                { img: "/images/produce/herbs.jpg", t: "Quality Packing", d: "Every item inspected, sorted, and packed with precision. Temperature-controlled handling." },
                 { img: "/images/stages/08-truck.jpg", t: "Dawn Delivery", d: "Midnight starts from New Spitalfields. Cold chain integrity, precision routes across London." },
               ].map((item, i) => (
                 <R key={item.t} delay={i * .1}>
@@ -384,7 +384,7 @@ export default function Home() {
       <section id="produce" className="relative overflow-hidden">
         {/* Full-width produce banner */}
         <div className="relative h-[45vh] min-h-[360px]">
-          <Image src="/images/stages/07-packing.jpg" alt="Fresh produce crates" fill className="object-cover" sizes="100vw" />
+          <Image src="/images/produce/market-crates.jpg" alt="Fresh produce market" fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#1e150e] via-black/30 to-[#0c2e22]" />
           <div className="absolute inset-0 flex items-center justify-center text-center px-6">
             <R>
@@ -400,23 +400,30 @@ export default function Home() {
 
         <div className="bg-[#0c2e22] px-6 py-20 md:px-14 md:py-28">
           <div className="mx-auto max-w-6xl">
-            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {/* Product cards with real photos */}
+            <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
               {[
-                ["Tomatoes", "Vine, Cherry, Beef, Plum, Heritage", "#C43520", "Our signature. Sun-ripened and flavour-packed."],
-                ["Peppers", "Bell, Chilli, Romano, Padron, Scotch Bonnet", "#D4A017", "From sweet bell to fiery scotch bonnet."],
-                ["Salad & Greens", "Lettuce, Rocket, Spinach, Kale, Watercress", "#4A7A2A", "Crisp, fresh, delivered at peak."],
-                ["Citrus & Fruits", "Lemons, Limes, Oranges, Berries, Avocados", "#E8A800", "Bright, juicy, always in season."],
-                ["Herbs", "Basil, Coriander, Mint, Parsley, Thyme", "#6B8B3A", "Aromatic, fragrant, cut fresh."],
-                ["Exotics", "Aubergine, Okra, Plantain, Yam", "#8B5A8A", "Specialty imports for global kitchens."],
-              ].map(([t, varieties, c, desc], i) => (
-                <R key={t} delay={i * .06}>
-                  <div className="group rounded-2xl border border-[#F5EFE3]/[.04] bg-[#F5EFE3]/[.02] p-8 transition-all hover:bg-[#F5EFE3]/[.05] hover:border-[#F5EFE3]/[.08]">
-                    <div className="mb-5 flex items-center gap-3">
-                      <div className="h-2.5 w-2.5 rounded-full transition-transform group-hover:scale-125" style={{ background: c }} />
-                      <h4 className="font-serif text-xl text-[#F5EFE3]">{t}</h4>
+                { t: "Tomatoes", img: "/images/produce/tomatoes.jpg", varieties: "Vine, Cherry, Beef, Plum, Heritage", c: "#C43520", desc: "Our signature. Sun-ripened and flavour-packed from Mediterranean growers." },
+                { t: "Peppers", img: "/images/produce/peppers.jpg", varieties: "Bell, Chilli, Romano, Padron, Scotch Bonnet", c: "#D4A017", desc: "From sweet bell to fiery scotch bonnet. Vibrant colour, bold taste." },
+                { t: "Salad & Greens", img: "/images/produce/greens.jpg", varieties: "Lettuce, Rocket, Spinach, Kale, Watercress", c: "#4A7A2A", desc: "Crisp, fresh, delivered at peak. The foundation of every great plate." },
+                { t: "Citrus & Fruits", img: "/images/produce/citrus.jpg", varieties: "Lemons, Limes, Oranges, Berries, Avocados", c: "#E8A800", desc: "Bright, juicy, always in season. Zest and sweetness delivered fresh." },
+                { t: "Herbs", img: "/images/produce/herbs.jpg", varieties: "Basil, Coriander, Mint, Parsley, Thyme, Rosemary", c: "#6B8B3A", desc: "Aromatic, fragrant, cut fresh. The finishing touch for any dish." },
+                { t: "Exotics", img: "/images/produce/exotic.jpg", varieties: "Aubergine, Okra, Plantain, Yam, Scotch Bonnet", c: "#8B5A8A", desc: "Specialty imports for global kitchens. Hard to find, easy to order." },
+              ].map((item, i) => (
+                <R key={item.t} delay={i * .07}>
+                  <div className="group overflow-hidden rounded-2xl border border-[#F5EFE3]/[.04] bg-[#F5EFE3]/[.02] transition-all hover:border-[#F5EFE3]/[.08]">
+                    <div className="relative aspect-[3/2] overflow-hidden">
+                      <Image src={item.img} alt={item.t} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width:640px) 100vw, (max-width:768px) 50vw, 33vw" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0c2e22] via-[#0c2e22]/25 to-transparent" />
+                      <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full" style={{ background: item.c }} />
+                        <span className="text-[11px] font-semibold text-[#F5EFE3]/80">{item.t}</span>
+                      </div>
                     </div>
-                    <p className="text-[13px] leading-[1.65] text-[#F5EFE3]/45">{desc}</p>
-                    <p className="mt-3 text-[11px] leading-[1.5] text-[#F5EFE3]/25">{varieties}</p>
+                    <div className="p-6">
+                      <p className="text-[13px] leading-[1.7] text-[#F5EFE3]/45">{item.desc}</p>
+                      <p className="mt-3 text-[10px] uppercase tracking-[.15em] text-[#F5EFE3]/22">{item.varieties}</p>
+                    </div>
                   </div>
                 </R>
               ))}
@@ -451,10 +458,10 @@ export default function Home() {
             <R><div className="text-center"><div className="text-[10px] uppercase tracking-[.32em] text-[#AE8C57]">WHY TYDENE</div><div className="mx-auto mt-3 h-[1.5px] w-12 bg-[#AE8C57]/60" /></div></R>
             <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-[#F5EFE3]/[.04] md:grid-cols-2">
               {[
-                ["01", "Trust", "Over 200 London restaurants depend on us daily. Our word is our bond.", "/images/stages/04-detach.jpg"],
-                ["02", "Freshness", "Harvest to kitchen in the shortest time possible. Cold chain integrity.", "/images/stages/02-ripening.jpg"],
-                ["03", "Consistency", "Same quality, every delivery, every single morning.", "/images/stages/06-sorting.jpg"],
-                ["04", "Relationships", "We know our growers by name, our clients by preference.", "/images/stages/03-selection.jpg"],
+                ["01", "Trust", "Over 200 London restaurants depend on us daily. Our word is our bond.", "/images/produce/tomatoes.jpg"],
+                ["02", "Freshness", "Harvest to kitchen in the shortest time possible. Cold chain integrity.", "/images/produce/greens.jpg"],
+                ["03", "Consistency", "Same quality, every delivery, every single morning.", "/images/produce/citrus.jpg"],
+                ["04", "Relationships", "We know our growers by name, our clients by preference.", "/images/produce/herbs.jpg"],
               ].map(([n, t, d, img], i) => (
                 <R key={n} delay={i * .08}>
                   <div className="group flex gap-5 bg-[#0e3528] p-6 transition-colors hover:bg-[#12402e] h-full md:p-8">
@@ -480,7 +487,7 @@ export default function Home() {
          ═══════════════════════════════════════ */}
       <section className="relative overflow-hidden">
         <div className="relative h-[30vh] min-h-[240px]">
-          <Image src="/images/stages/10-air.jpg" alt="Global supply chain" fill className="object-cover" sizes="100vw" />
+          <Image src="/images/produce/kitchen.jpg" alt="Chef preparing fresh produce" fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0e3528]/90 via-black/60 to-[#1e150e]" />
         </div>
         <div className="bg-[#1e150e] px-6 py-20 text-center md:px-14 md:py-28">
@@ -503,8 +510,8 @@ export default function Home() {
          ═══════════════════════════════════════ */}
       <section id="contact" className="relative overflow-hidden">
         <div className="relative h-[35vh] min-h-[280px]">
-          <Image src="/images/stages/01-field.jpg" alt="TYDENE field" fill className="object-cover" sizes="100vw" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1e150e] via-black/50 to-[#0e3528]" />
+          <Image src="/images/produce/mixed-fresh.jpg" alt="Fresh produce variety" fill className="object-cover" sizes="100vw" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1e150e] via-black/55 to-[#0e3528]" />
           <div className="absolute inset-0 flex items-center justify-center text-center px-6">
             <R>
               <div>
