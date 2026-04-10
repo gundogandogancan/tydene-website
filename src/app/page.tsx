@@ -26,7 +26,7 @@ function R({ children, className = "", delay = 0 }: { children: React.ReactNode;
 }
 
 /* ── Parallax Image — moves on scroll ── */
-function PImg({ src, alt, className = "", speed = 20 }: { src: string; alt: string; className?: string; speed?: number }) {
+function PImg({ src, alt, className = "", speed = 20, children }: { src: string; alt: string; className?: string; speed?: number; children?: React.ReactNode }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [`-${speed}%`, `${speed}%`]);
@@ -35,6 +35,7 @@ function PImg({ src, alt, className = "", speed = 20 }: { src: string; alt: stri
       <motion.div className="absolute inset-[-15%]" style={{ y }}>
         <Image src={src} alt={alt} fill className="object-cover" sizes="100vw" />
       </motion.div>
+      {children}
     </div>
   );
 }
