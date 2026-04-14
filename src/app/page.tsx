@@ -195,6 +195,13 @@ export default function Home() {
               </motion.div>
             )}
           </motion.div>
+
+          {/* aymedo.io credit on intro */}
+          <motion.div className="absolute bottom-8 left-0 right-0 z-10 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
+            <a href="https://aymedo.io" target="_blank" rel="noopener noreferrer" className="text-[11px] tracking-[.15em] text-[#AE8C57]/50 hover:text-[#AE8C57] transition-colors no-underline">
+              Created by <span className="font-semibold">aymedo.io</span>
+            </a>
+          </motion.div>
         </motion.div>
       )}
 
@@ -601,7 +608,7 @@ export default function Home() {
           </div>
           <div className="h-px w-48 bg-white/[.03]" />
           <p className="text-[9px] text-white/8">&copy; {new Date().getFullYear()} TYDENE Fresh Produce Ltd. New Spitalfields Market, London E10 5SQ.</p>
-          <p className="mt-2 text-[10px] text-white/15">Created by <a href="https://aymedo.io" target="_blank" rel="noopener noreferrer" className="text-[#AE8C57]/40 hover:text-[#AE8C57]/70 transition-colors no-underline">aymedo.io</a></p>
+          <p className="mt-3 text-[12px] tracking-[.1em] text-white/30">Created by <a href="https://aymedo.io" target="_blank" rel="noopener noreferrer" className="text-[#AE8C57]/60 font-semibold hover:text-[#AE8C57] transition-colors no-underline">aymedo.io</a></p>
         </div>
       </footer>
     </div>
