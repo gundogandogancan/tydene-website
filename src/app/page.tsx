@@ -601,6 +601,7 @@ export default function Home() {
           </div>
           <div className="h-px w-48 bg-white/[.03]" />
           <p className="text-[9px] text-white/8">&copy; {new Date().getFullYear()} TYDENE Fresh Produce Ltd. New Spitalfields Market, London E10 5SQ.</p>
+          <p className="mt-2 text-[10px] text-white/15">Created by <a href="https://aymedo.io" target="_blank" rel="noopener noreferrer" className="text-[#AE8C57]/40 hover:text-[#AE8C57]/70 transition-colors no-underline">aymedo.io</a></p>
         </div>
       </footer>
     </div>
